@@ -46,8 +46,8 @@ public class Unit3App {
         System.out.println("Dice Roll Loses: " + diceRollLoses);
         System.out.println("Color Spin Wheel Wins: " + colorSpinWins);
         System.out.println("Color Spin Wheel Loses: " + colorSpinLoses);
-        System.out.println("Rock Paper Scissors Loses: " + rpsWins);
-        System.out.println("Rock Paper Scissors Wins: " + rpsLoses);
+        System.out.println("Rock Paper Scissors Wins: " + rpsWins);
+        System.out.println("Rock Paper Scissors Loses: " + rpsLoses);
         System.out.println("Rock Paper Scissors Ties: " + rpsTies);
         System.out.println("Total Wins: " + totalWins);
         System.out.println("Total Wins: " + totalLoses);
