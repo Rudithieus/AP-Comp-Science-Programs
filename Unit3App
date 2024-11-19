@@ -1,0 +1,306 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class Unit3App {
+    private static String playAgain;
+    private static int coinFlipWins = 0;
+    private static int coinFlipLoses = 0;
+    private static int diceRollWins = 0;
+    private static int diceRollLoses = 0;
+    private static int colorSpinWins = 0;
+    private static int colorSpinLoses = 0;
+    private static int rpsWins = 0;
+    private static int rpsLoses = 0;
+    private static int rpsTies = 0;
+    private static int totalWins = 0;
+    private static int totalLoses = 0;
+    public static void main(String[] args) {
+
+        try (Scanner scanner = new Scanner(System.in)) {
+            Random random = new Random();
+
+            HeadsOrTailsGame game1 = new HeadsOrTailsGame(scanner, random);
+            game1.start();
+
+            System.out.println("Starting Next Game!");
+
+            DiceRollGame game2 = new DiceRollGame(scanner, random);
+            game2.start();
+
+            System.out.println("Starting Next Game!");
+
+            ColorSpinnerGame game3 = new ColorSpinnerGame(scanner, random);
+            game3.start();
+
+            System.out.println("Starting Next Game!");
+            RockPaperScissorsGame game4 = new RockPaperScissorsGame (scanner, random);
+            game4.start();
+
+        }
+
+        System.out.println("Thanks for playing!");
+        System.out.println("Game Stats: ");
+        System.out.println("Coin Flip Wins: " + coinFlipWins);
+        System.out.println("Coin Flip Loses: " + coinFlipLoses);
+        System.out.println("Dice Roll Wins: " + diceRollWins);
+        System.out.println("Dice Roll Loses: " + diceRollLoses);
+        System.out.println("Color Spin Wheel Wins: " + colorSpinWins);
+        System.out.println("Color Spin Wheel Loses: " + colorSpinLoses);
+        System.out.println("Rock Paper Scissors Loses: " + rpsWins);
+        System.out.println("Rock Paper Scissors Wins: " + rpsLoses);
+        System.out.println("Rock Paper Scissors Ties: " + rpsTies);
+        System.out.println("Total Wins: " + totalWins);
+        System.out.println("Total Wins: " + totalLoses);
+    }
+
+    private static class HeadsOrTailsGame {
+        private final Scanner scanner;
+        private final Random random;
+
+        public HeadsOrTailsGame(Scanner scanner, Random random) {
+            this.scanner = scanner;
+            this.random = random;
+        }
+
+        public void start() {
+            do {
+                playRound();
+
+                System.out.println("Do you want to play again? (Yes or No)");
+                playAgain = scanner.nextLine().trim();
+
+                while (!playAgain.equalsIgnoreCase("yes") && !playAgain.equalsIgnoreCase("no")) {
+                    System.out.println("Invalid input. Enter Yes or No:");
+                    playAgain = scanner.nextLine().trim();  
+                }
+            } while (playAgain.equalsIgnoreCase("yes"));
+        }
+
+        private void playRound() {
+            String coinFlipResult = random.nextBoolean() ? "Heads" : "Tails";
+            System.out.println("Guess on the coin flip, Heads or Tails?");
+
+            String userCoinGuess;
+            while (true) {
+                userCoinGuess = scanner.nextLine().trim();
+                if (userCoinGuess.equalsIgnoreCase("Heads") || userCoinGuess.equalsIgnoreCase("Tails")) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Enter Heads or Tails:");
+                }
+            }
+
+            boolean coinFlipAnswer = userCoinGuess.equalsIgnoreCase(coinFlipResult);
+
+            if (coinFlipAnswer) {
+                coinFlipWins++;
+                totalWins++;
+            } else {
+                coinFlipLoses++;
+                totalLoses++;
+            }
+
+            System.out.println(coinFlipAnswer ? 
+            "Correct! The coin flip was " + coinFlipResult + "." : 
+            "Incorrect! The coin flip was " + coinFlipResult + ".");
+        }
+    }
+
+    private static class DiceRollGame {
+        private final Scanner scanner;
+        private final Random random;
+    
+        public DiceRollGame(Scanner scanner, Random random) {
+            this.scanner = scanner;
+            this.random = random;
+        }
+
+        public void start() {
+            do {
+                playRound();
+
+                System.out.println("Do you want to play again? (Yes or No)");
+                playAgain = scanner.nextLine().trim();
+
+                while (!playAgain.equalsIgnoreCase("yes") && !playAgain.equalsIgnoreCase("no")) {
+                    System.out.println("Invalid input. Enter Yes or No:");
+                    playAgain = scanner.nextLine().trim();
+                }
+            } while (playAgain.equalsIgnoreCase("yes"));
+        }
+
+        private void playRound() {
+            int diceRollResult = random.nextInt(6) + 1;
+            System.out.println("Guess a number from 1 to 6:");
+
+            int userDiceRollGuess;
+            while (true) {
+                try {
+                    userDiceRollGuess = Integer.parseInt(scanner.nextLine().trim());
+                    if (userDiceRollGuess >= 1 && userDiceRollGuess <=6) {
+                        break;
+                    } else {
+                        System.out.println("Invalid input. Enter a number between 1 - 6:");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a valid number between 1 and 6:");
+                }
+            }
+
+            if(userDiceRollGuess == diceRollResult) {
+                diceRollWins++;
+                totalWins++;
+                System.out.println("Correct! The dice roll was " + diceRollResult + ".");
+            } else {
+                diceRollLoses++;
+                totalLoses++;
+                System.out.println("Incorrect! The dice roll was " + diceRollResult + ".");
+        }
+    }
+} 
+    
+    private static class ColorSpinnerGame {
+        private final Scanner scanner;
+        private final Random random;
+
+        public ColorSpinnerGame(Scanner scanner, Random random) {
+            this.scanner = scanner;
+            this.random = random;
+        }
+
+        public void start() {
+            do {
+                playRound();
+
+                System.out.println("Do you want to play again? (Yes or No)");
+                playAgain = scanner.nextLine().trim();
+
+                while (!playAgain.equalsIgnoreCase("yes") && !playAgain.equalsIgnoreCase("no")) {
+                    System.out.println("Invalid input. Enter Yes or No:");
+                    playAgain = scanner.nextLine().trim();
+                }
+            } while (playAgain.equalsIgnoreCase("yes"));
+        }
+
+        private void playRound() {
+            int colorNumber = random.nextInt(3) + 1;
+            String colorSpinnerResult;
+            
+            if (colorNumber == 1) {
+                colorSpinnerResult = "Red";
+            } else if (colorNumber == 2) {
+                colorSpinnerResult = "Green";
+            } else {
+                colorSpinnerResult = "Blue";
+            }
+            System.out.println("Guess Red, Blue, or Green");
+
+            String userColorGuess;
+            while (true) {
+                userColorGuess = scanner.nextLine().trim();
+                if (userColorGuess.equalsIgnoreCase("Red") ||
+                userColorGuess.equalsIgnoreCase("Green") ||
+                userColorGuess. equalsIgnoreCase("Blue")) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Guess Red, Green, or Blue.");
+                }
+            }
+            
+            boolean colorSpinnerAnswer = userColorGuess.equalsIgnoreCase(colorSpinnerResult);
+            if (colorSpinnerAnswer) {
+                colorSpinWins++;
+                totalWins++;
+            } else {
+                colorSpinLoses++;
+                totalLoses++;
+            }
+
+            System.out.println("Spinning the Color Wheel...");
+            System.out.println(colorSpinnerAnswer ? 
+                "Correct! The color wheel landed on " + colorSpinnerResult + "." : 
+                "Incorrect! The color wheel landed on " + colorSpinnerResult + ".");
+        }
+    }
+
+    private static class RockPaperScissorsGame {
+        private final Scanner scanner;
+        private final Random random;
+
+        public RockPaperScissorsGame(Scanner scanner, Random random) {
+            this.scanner = scanner;
+            this.random = random;
+        }
+
+        public void start() {
+            do {
+                playRound();
+
+                System.out.println("Do you want to play again? (Yes or No)");
+                playAgain = scanner.nextLine().trim();
+
+                while (!playAgain.equalsIgnoreCase("yes") && !playAgain.equalsIgnoreCase("no")) {
+                    System.out.println("Invalid input. Enter Yes or No:");
+                    playAgain = scanner.nextLine().trim();
+                }
+            } while (playAgain.equalsIgnoreCase("yes"));
+        }
+
+        private void playRound() {
+            while (true) {
+                int rpsNumber = random.nextInt(3) + 1;
+                String rpsComputerGuess;
+            
+                if (rpsNumber == 1) {
+                    rpsComputerGuess = "Rock";
+                } else if (rpsNumber == 2) {
+                    rpsComputerGuess = "Paper";
+                } else {
+                    rpsComputerGuess = "Scissors";
+                }
+
+                System.out.println("Rock.. Paper.. Scissors..");
+                System.out.println("Shoot!!");
+
+                String rpsUserGuess;
+                while (true) {
+                    rpsUserGuess = scanner.nextLine().trim();
+                    if (rpsUserGuess.equalsIgnoreCase("Rock") || 
+                    rpsUserGuess.equalsIgnoreCase("Paper") || 
+                    rpsUserGuess.equalsIgnoreCase("Scissors")) {
+                        break;
+                    } else {
+                        System.out.println("Invalid input. Guess Rock, Paper, or Scissors.");
+                    }
+                }
+
+                System.out.println("You chose: " + rpsUserGuess);
+                System.out.println("Computer chose: " + rpsComputerGuess);
+
+                if (rpsUserGuess.equalsIgnoreCase(rpsComputerGuess)) {
+                    rpsTies++;
+                    System.out.println("Tie, both chose " + rpsComputerGuess + " Go again!");
+                    continue;
+                }
+
+                boolean userOutComes =
+                (rpsUserGuess.equalsIgnoreCase("Rock") && rpsComputerGuess.equalsIgnoreCase("Scissors")) ||
+                (rpsUserGuess.equalsIgnoreCase("Paper") && rpsComputerGuess.equalsIgnoreCase("Rock")) ||
+                (rpsUserGuess.equalsIgnoreCase("Scissors") && rpsComputerGuess.equalsIgnoreCase("Paper"));
+
+                if (userOutComes) {
+                    rpsWins++;
+                    totalWins++;
+                } else {
+                    rpsLoses++;
+                    totalLoses++;
+                }
+
+                System.out.println(userOutComes ? 
+                    "You win! " + rpsUserGuess + " beats " + rpsComputerGuess + "." : 
+                    "You lose! " + rpsComputerGuess + " beats " + rpsUserGuess + ".");
+                break;
+            }
+        }
+    }
+}
