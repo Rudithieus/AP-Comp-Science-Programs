@@ -50,7 +50,7 @@ public class Unit3App {
         System.out.println("Rock Paper Scissors Loses: " + rpsLoses);
         System.out.println("Rock Paper Scissors Ties: " + rpsTies);
         System.out.println("Total Wins: " + totalWins);
-        System.out.println("Total Wins: " + totalLoses);
+        System.out.println("Total Loses: " + totalLoses);
     }
 
     private static class HeadsOrTailsGame {
