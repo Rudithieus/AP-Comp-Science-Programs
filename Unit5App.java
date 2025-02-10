@@ -1,0 +1,111 @@
+import java.io.*;
+import java.util.*;
+
+public class Unit5App {
+    private static final int MAX_GUESSES = 5;
+
+    public static void main(String[] args) throws Exception {
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                List<String> words = loadWords("C:/Users/rudyv/OneDrive/Coding/Java/Unit5App/src/words.txt");
+
+                if (words.isEmpty()) {
+                    System.out.println("No words found in the dictionary.");
+                    return;
+                }
+
+                java.util.Random random = new java.util.Random();
+                int randomIndex = random.nextInt(words.size());
+                String mysteryWord = words.get(randomIndex).toUpperCase();
+                char[] revealedWord = new char[mysteryWord.length()];
+                Arrays.fill(revealedWord, '*');
+
+                Set<Character> guessedLetters = new TreeSet<>();
+                Set<Character> incorrectGuesses = new TreeSet<>();
+                int guessesLeft = MAX_GUESSES;
+
+                System.out.println("Welcome to Hangman! You have to guess the mystery word in " + MAX_GUESSES + " guesses or less.");
+
+                while (guessesLeft > 0 && !String.valueOf(revealedWord).equals(mysteryWord)) {
+                    System.out.println("\nHere's what you have so far: " + String.valueOf(revealedWord));
+                    System.out.println("You have " + guessesLeft + " guesses left");
+                    System.out.println("Guessed letters: " + guessedLetters);
+                    System.out.println("Incorrect guesses: " + incorrectGuesses);
+                    displayHangman(MAX_GUESSES - guessesLeft);
+
+                    System.out.print("What letter would you like to guess next? ");
+                    String input = scanner.nextLine().toUpperCase();
+
+                    if (input.length() != 1 || !Character.isLetter(input.charAt(0))) {
+                        System.out.println("Invalid input. Please enter a single letter.");
+                        continue;
+                    }
+
+                    char guess = input.charAt(0);
+
+                    if (guessedLetters.contains(guess)) {
+                        System.out.println("You've already guessed that letter.");
+                        continue;
+                    }
+
+                    guessedLetters.add(guess);
+
+                    if (mysteryWord.contains(String.valueOf(guess))) {
+                        System.out.println("CORRECT!!!");
+                        for (int i = 0; i < mysteryWord.length(); i++) {
+                            if (mysteryWord.charAt(i) == guess) {
+                                revealedWord[i] = guess;
+                            }
+                        }
+                    } else {
+                        System.out.println("I'm sorry...");
+                        guessesLeft--;
+                        incorrectGuesses.add(guess);
+                    }
+                }
+
+                if (String.valueOf(revealedWord).equals(mysteryWord)) {
+                    System.out.println("\nCongratulations! You guessed the word: " + mysteryWord);
+                } else {
+                    System.out.println("\nGame Over! You've run out of guesses.");
+                    System.out.println("The mystery word was: " + mysteryWord);
+                    displayHangman(MAX_GUESSES);
+                }
+
+                System.out.print("Would you like to play again? (yes/no): ");
+                String playAgain = scanner.nextLine().trim().toLowerCase();
+                if (!playAgain.equals("yes")) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private static List<String> loadWords(String fileName) {
+        List<String> words = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    words.add(line.trim());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading words: " + e.getMessage());
+        }
+        return words;
+    }
+
+    private static void displayHangman(int wrongGuesses) {
+        String[] hangmanStages = {
+            " +---+\n     |   |\n         |\n         |\n         |\n         |\n    =========",
+            " +---+\n     |   |\n     O   |\n         |\n         |\n         |\n    =========",
+            " +---+\n     |   |\n     O   |\n     |   |\n         |\n         |\n    =========",
+            " +---+\n     |   |\n     O   |\n    /|   |\n         |\n         |\n    =========",
+            " +---+\n     |   |\n     O   |\n    /|\\  |\n         |\n         |\n    =========",
+            " +---+\n     |   |\n     O   |\n    /|\\  |\n    / \\  |\n         |\n    ========="
+        };
+
+        System.out.println(hangmanStages[Math.min(wrongGuesses, hangmanStages.length - 1)]);
+    }
+}
